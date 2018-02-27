@@ -46,18 +46,6 @@ class PlgUserConsentNote extends JPlugin
 	{
 		$process = true;
 
-		// Only trigger on successful user creation
-		if (!$success)
-		{
-			$process = false;
-		}
-
-		// Only trigger on new user creation, not subsequent edits
-		// if (!$isnew)
-		// {
-		// 	$process = false;
-		// }
-
 		// Only trigger on front-end user creation.
 		if ($this->app->isClient('administrator'))
 		{
@@ -68,34 +56,19 @@ class PlgUserConsentNote extends JPlugin
 		{
 			return;
 		}
-
+	//	$userId = JFactory::getUser()->id;
+		$db = JFactory::getDbo();
 		// Create a new user note
-
 		// Get the user's ID
 		$user_id = (int)$user['id'];
 
 		// Get the IP address
 		$ip=$_SERVER['HTTP_CLIENT_IP'];
 
-		// if ((strpos($ip, '::') === 0) && (strstr($ip, '.') !== false))
-		// {
-		// 	$ip = substr($ip, strrpos($ip, ':') + 1);
-		// }
-
 		// Get the user agent string
 		$user_agent = $_SERVER['HTTP_USER_AGENT'];
 
-		// Get current date and time in database format
-		// JLoader::import('joomla.utilities.date');
-		// $now = new Date();
-		// $now = $now->toSql();
-
 		$now = new JDate();
-		// Load the component's administrator translation files
-		// $jlang = JFactory::getLanguage();
-		// $jlang->load('com_admintools', JPATH_ADMINISTRATOR, 'en-GB', true);
-		// $jlang->load('com_admintools', JPATH_ADMINISTRATOR, $jlang->getDefault(), true);
-		// $jlang->load('com_admintools', JPATH_ADMINISTRATOR, null, true);
 
 		// Create and save the user note
 		$userNote = (object)array(
