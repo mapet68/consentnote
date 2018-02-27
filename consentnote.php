@@ -42,34 +42,80 @@ class PlgUserConsentNote extends JPlugin
 	 * @since   1.0
 	 */
 
+	public function onUserAfterSave($user, $isnew, $success, $msg)
+	{
+		$process = true;
 
-// 	 public function onUserAfterLogin($options)
-// 	{
-// 			// Run in frontend only
-// 			if ($this->app->isClient('administrator'))
-// 			{
-// 				return;
-// 			}
+		// Only trigger on successful user creation
+		if (!$success)
+		{
+			$process = false;
+		}
 
-// 			$userId = JFactory::getUser()->id;
-// 			$db = JFactory::getDbo();
-			
-// 			$query = $db->getQuery(true)
-// 				->select('1')
-// 				->from($db->qn('#__user_profiles'))
-// 				->where($db->qn('user_id') . ' = ' . (int) $userId)
-// 				->where($db->qn('profile_key') . ' = ' . $db->q('profile.consent'));
-// 			$db->setQuery($query);
+		// Only trigger on new user creation, not subsequent edits
+		// if (!$isnew)
+		// {
+		// 	$process = false;
+		// }
 
-// 			$consent = $db->loadObjectList();
+		// Only trigger on front-end user creation.
+		if (!$this->container->platform->isFrontend())
+		{
+			$process = false;
+		}
 
-// 			if (!count($consent) === 0)
-// 			{
-// 				return;
-// 			}
+		if (!$process)
+		{
+			return;
+		}
 
-// 			// if the count of $consent is 0 then redirecct to com_users profile edit
-// 			$this->app->enqueueMessage(\JText::_('PLG_USER_REDIRECTCONSENT_PLEASE_CHECK_THE_BOX'), 'notice');
-// 			$this->app->redirect(\JRoute::_('index.php?option=com_users&view=profile&layout=edit', false));
-// 	  }
-// }
+		// Create a new user note
+
+		// Get the user's ID
+		$user_id = (int)$user['id'];
+
+		// Get the IP address
+		$ip=$_SERVER['HTTP_CLIENT_IP'];
+
+		// if ((strpos($ip, '::') === 0) && (strstr($ip, '.') !== false))
+		// {
+		// 	$ip = substr($ip, strrpos($ip, ':') + 1);
+		// }
+
+		// Get the user agent string
+		$user_agent = $_SERVER['HTTP_USER_AGENT'];
+
+		// Get current date and time in database format
+		JLoader::import('joomla.utilities.date');
+		$now = new Date();
+		$now = $now->toSql();
+
+		// Load the component's administrator translation files
+		// $jlang = JFactory::getLanguage();
+		// $jlang->load('com_admintools', JPATH_ADMINISTRATOR, 'en-GB', true);
+		// $jlang->load('com_admintools', JPATH_ADMINISTRATOR, $jlang->getDefault(), true);
+		// $jlang->load('com_admintools', JPATH_ADMINISTRATOR, null, true);
+
+		// Create and save the user note
+		$userNote = (object)array(
+			'user_id'         => $user_id,
+			'catid'           => 0,
+			'subject'         => JText::_('PLG_CONSENTNOTE_SUBJECT'),
+			'body'            => JText::sprintf('PLG_CONSENTNOTE_BODY', $ip, $user_agent),
+			'state'           => 1,
+			'created_user_id' => 42,
+			'created_time'    => $now
+		);
+
+		try
+		{
+			$this->db->insertObject('#__user_notes', $userNote, 'id');
+		}
+		catch (Exception $e)
+		{
+			// Do nothing if the save fails
+		}
+	}
+
+}
+
