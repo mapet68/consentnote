@@ -56,8 +56,7 @@ class PlgUserConsentNote extends JPlugin
 		{
 			return;
 		}
-	//	$userId = JFactory::getUser()->id;
-		$db = JFactory::getDbo();
+
 		// Create a new user note
 		// Get the user's ID
 		$user_id = (int)$user['id'];
@@ -83,7 +82,9 @@ class PlgUserConsentNote extends JPlugin
 
 		try
 		{
-			$this->db->insertObject('#__user_notes', $userNote, 'id');
+//			$this->db->insertObject('#__user_notes', $userNote, 'id');
+			$result = JFactory::getDbo()->insertObject('#__user_notes', $userNote, 'id');
+
 		}
 		catch (Exception $e)
 		{
