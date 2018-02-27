@@ -59,7 +59,7 @@ class PlgUserConsentNote extends JPlugin
 		// }
 
 		// Only trigger on front-end user creation.
-		if (!$this->container->platform->isFrontend())
+		if ($this->app->isClient('administrator'))
 		{
 			$process = false;
 		}
