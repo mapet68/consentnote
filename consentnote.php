@@ -86,10 +86,11 @@ class PlgUserConsentNote extends JPlugin
 		$user_agent = $_SERVER['HTTP_USER_AGENT'];
 
 		// Get current date and time in database format
-		JLoader::import('joomla.utilities.date');
-		$now = new Date();
-		$now = $now->toSql();
+		// JLoader::import('joomla.utilities.date');
+		// $now = new Date();
+		// $now = $now->toSql();
 
+		$now = new JDate();
 		// Load the component's administrator translation files
 		// $jlang = JFactory::getLanguage();
 		// $jlang->load('com_admintools', JPATH_ADMINISTRATOR, 'en-GB', true);
