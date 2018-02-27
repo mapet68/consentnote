@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.8" type="plugin" group="user" method="upgrade">
+	<name>plg_user_consentnote</name>
+	<author>Brian Teeman</author>
+	<creationDate>Februar 2018</creationDate>
+	<copyright>(c) 2018 - Brian Teeman All rights reserved.</copyright>
+	<authorEmail>brian@teeman.net</authorEmail>
+	<authorUrl>https://brian.teeman.net</authorUrl>
+	<version>1.0.0</version>
+	<license>GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html</license>
+	<description>PLG_USER_CONSENTNOTE_MANIFEST_DESCRIPTION</description>
+	<scriptfile>script.php</scriptfile>
+	<files>
+		<filename plugin="consentnote">consentnote.php</filename>
+		<folder>language</folder>
+	</files>
+	<updateservers>
+		<server type="extension" name="Consent Note Update Site">https://raw.githubusercontent.com/brianteeman/consentnote/master/manifest.xml</server>
+	</updateservers>
+</extension>
