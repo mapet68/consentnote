@@ -67,7 +67,8 @@ class PlgUserConsentNote extends JPlugin
 		// Get the user agent string
 		$user_agent = $_SERVER['HTTP_USER_AGENT'];
 
-		$now = new JDate();
+		// Get the date in DB format
+		$now = JFactory::getDate()->toSql();
 
 		// Create and save the user note
 		$userNote = (object)array(
@@ -82,7 +83,6 @@ class PlgUserConsentNote extends JPlugin
 
 		try
 		{
-//			$this->db->insertObject('#__user_notes', $userNote, 'id');
 			$result = JFactory::getDbo()->insertObject('#__user_notes', $userNote, 'id');
 
 		}
