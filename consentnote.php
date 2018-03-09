@@ -44,15 +44,8 @@ class PlgUserConsentNote extends JPlugin
 
 	public function onUserAfterSave($user, $isnew, $success, $msg)
 	{
-		$process = true;
-
 		// Only trigger on front-end user creation.
 		if ($this->app->isClient('administrator'))
-		{
-			$process = false;
-		}
-
-		if (!$process)
 		{
 			return;
 		}
